@@ -27,14 +27,28 @@ namespace Bloc_de_notas
             }
             else
             {
-                ObjetoNota nota = new ObjetoNota();
+                if (!ComprobarExiste(tbTitulo.Text))
+                {
+                    ObjetoNota nota = new ObjetoNota();
 
-                nota.Titulo = tbTitulo.Text;
-                nota.Contenido = rtbNota.Text;
+                    nota.Titulo = tbTitulo.Text;
+                    nota.Contenido = rtbNota.Text;
 
-                Notas.Add(nota);
+                    Notas.Add(nota);
 
-                cbIndex.Items.Add(nota.Titulo);
+                    cbIndex.Items.Add(nota.Titulo);
+                }
+                else
+                {
+                    for (int i = 0; i < Notas.Count; i++)
+                    {
+                        if (ComprobarExiste(tbTitulo.Text))
+                        {
+                            Notas[i].Contenido = rtbNota.Text;
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -55,6 +69,18 @@ namespace Bloc_de_notas
 
             tbTitulo.Text = "";
             rtbNota.Text = "";
+        }
+
+        private Boolean ComprobarExiste(String t)
+        {
+            for (int i = 0; i < Notas.Count; i++)
+            {
+                if (Notas[i].Titulo.Equals(t))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
