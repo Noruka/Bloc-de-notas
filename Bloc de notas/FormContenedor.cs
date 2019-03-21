@@ -6,8 +6,7 @@ namespace Bloc_de_notas
 {
     public partial class ShiruNotas : Form
     {
-
-        List<ObjetoNota> Notas = new List<ObjetoNota>();
+        private List<ObjetoNota> Notas = new List<ObjetoNota>();
 
         public ShiruNotas()
         {
@@ -22,12 +21,12 @@ namespace Bloc_de_notas
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (tbTitulo.Equals(""))
+            if (tbTitulo.Text.Equals(""))
             {
                 MessageBox.Show("Inserte un titulo para poder guardar");
             }
-            else {
-
+            else
+            {
                 ObjetoNota nota = new ObjetoNota();
 
                 nota.Titulo = tbTitulo.Text;
@@ -36,7 +35,6 @@ namespace Bloc_de_notas
                 Notas.Add(nota);
 
                 cbIndex.Items.Add(nota.Titulo);
-
             }
         }
 

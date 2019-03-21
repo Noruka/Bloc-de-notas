@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bloc_de_notas
 {
-    class ObjetoNota
+    internal class ObjetoNota
     {
         private String contenido;
         private String titulo;
@@ -23,7 +19,5 @@ namespace Bloc_de_notas
         public ObjetoNota()
         {
         }
-
-
     }
 }
