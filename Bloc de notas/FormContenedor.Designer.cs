@@ -39,10 +39,9 @@
             // 
             // btnCrearNota
             // 
-            this.btnCrearNota.Location = new System.Drawing.Point(16, 15);
-            this.btnCrearNota.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCrearNota.Location = new System.Drawing.Point(12, 12);
             this.btnCrearNota.Name = "btnCrearNota";
-            this.btnCrearNota.Size = new System.Drawing.Size(136, 57);
+            this.btnCrearNota.Size = new System.Drawing.Size(102, 46);
             this.btnCrearNota.TabIndex = 0;
             this.btnCrearNota.Text = "Crear Nota";
             this.btnCrearNota.UseVisualStyleBackColor = true;
@@ -50,19 +49,17 @@
             // 
             // rtbNota
             // 
-            this.rtbNota.Location = new System.Drawing.Point(19, 108);
-            this.rtbNota.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtbNota.Location = new System.Drawing.Point(14, 88);
             this.rtbNota.Name = "rtbNota";
-            this.rtbNota.Size = new System.Drawing.Size(680, 578);
+            this.rtbNota.Size = new System.Drawing.Size(511, 470);
             this.rtbNota.TabIndex = 5;
             this.rtbNota.Text = "";
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(160, 15);
-            this.btnGuardar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGuardar.Location = new System.Drawing.Point(120, 12);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(100, 57);
+            this.btnGuardar.Size = new System.Drawing.Size(75, 46);
             this.btnGuardar.TabIndex = 6;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
@@ -70,18 +67,16 @@
             // 
             // tbTitulo
             // 
-            this.tbTitulo.Location = new System.Drawing.Point(19, 76);
-            this.tbTitulo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbTitulo.Location = new System.Drawing.Point(14, 62);
             this.tbTitulo.Name = "tbTitulo";
-            this.tbTitulo.Size = new System.Drawing.Size(240, 22);
+            this.tbTitulo.Size = new System.Drawing.Size(181, 20);
             this.tbTitulo.TabIndex = 7;
             // 
             // btnEditar
             // 
-            this.btnEditar.Location = new System.Drawing.Point(487, 15);
-            this.btnEditar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnEditar.Location = new System.Drawing.Point(365, 12);
             this.btnEditar.Name = "btnEditar";
-            this.btnEditar.Size = new System.Drawing.Size(99, 53);
+            this.btnEditar.Size = new System.Drawing.Size(74, 43);
             this.btnEditar.TabIndex = 8;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = true;
@@ -89,10 +84,9 @@
             // 
             // btnBorrar
             // 
-            this.btnBorrar.Location = new System.Drawing.Point(595, 15);
-            this.btnBorrar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBorrar.Location = new System.Drawing.Point(446, 12);
             this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(105, 53);
+            this.btnBorrar.Size = new System.Drawing.Size(79, 43);
             this.btnBorrar.TabIndex = 9;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = true;
@@ -101,17 +95,16 @@
             // cbIndex
             // 
             this.cbIndex.FormattingEnabled = true;
-            this.cbIndex.Location = new System.Drawing.Point(487, 76);
-            this.cbIndex.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbIndex.Location = new System.Drawing.Point(365, 62);
             this.cbIndex.Name = "cbIndex";
-            this.cbIndex.Size = new System.Drawing.Size(212, 24);
+            this.cbIndex.Size = new System.Drawing.Size(160, 21);
             this.cbIndex.TabIndex = 10;
             // 
             // ShiruNotas
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(716, 702);
+            this.ClientSize = new System.Drawing.Size(537, 570);
             this.Controls.Add(this.cbIndex);
             this.Controls.Add(this.btnBorrar);
             this.Controls.Add(this.btnEditar);
@@ -119,9 +112,9 @@
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.rtbNota);
             this.Controls.Add(this.btnCrearNota);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ShiruNotas";
-            this.Text = "ShiruNote 0.3";
+            this.Text = "ShiruNote 0.4";
             this.ResumeLayout(false);
             this.PerformLayout();
 

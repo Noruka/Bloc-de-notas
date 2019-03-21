@@ -8,6 +8,8 @@ namespace Bloc_de_notas
     {
         private List<ObjetoNota> Notas = new List<ObjetoNota>();
 
+        private ObjetoNota nota;
+
         public ShiruNotas()
         {
             InitializeComponent();
@@ -15,40 +17,39 @@ namespace Bloc_de_notas
 
         private void btnCrearNota_Click(object sender, EventArgs e)
         {
-            tbTitulo.Text = "";
-            rtbNota.Text = "";
+            ClearNota();
+            nota = new ObjetoNota("Nueva Nota", "");
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (tbTitulo.Text.Equals(""))
+            String tituloNotaActual = tbTitulo.Text;
+            String contenidoNotaActual = rtbNota.Text;
+
+            if (tituloNotaActual.Equals(""))
             {
-                MessageBox.Show("Inserte un titulo para poder guardar");
+                MessageBox.Show("No has insertado titulo");
+            }
+            else if (ComprobarExiste(tituloNotaActual))
+            {
+                int pos = 0;
+
+                for (int i = 0; i < Notas.Count; i++)
+                {
+                    if (Notas[i].Titulo.Equals(tituloNotaActual))
+                    {
+                        pos = i;
+                        break;
+                    }
+                }
+
+                Notas[pos].SetNota(tituloNotaActual, contenidoNotaActual);
             }
             else
             {
-                if (!ComprobarExiste(tbTitulo.Text))
-                {
-                    ObjetoNota nota = new ObjetoNota();
-
-                    nota.Titulo = tbTitulo.Text;
-                    nota.Contenido = rtbNota.Text;
-
-                    Notas.Add(nota);
-
-                    cbIndex.Items.Add(nota.Titulo);
-                }
-                else
-                {
-                    for (int i = 0; i < Notas.Count; i++)
-                    {
-                        if (ComprobarExiste(tbTitulo.Text))
-                        {
-                            Notas[i].Contenido = rtbNota.Text;
-                            break;
-                        }
-                    }
-                }
+                nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
+                Notas.Add(nota);
+                AnyadirItem(tituloNotaActual);
             }
         }
 
@@ -56,17 +57,27 @@ namespace Bloc_de_notas
         {
             int i = cbIndex.SelectedIndex;
 
-            tbTitulo.Text = Notas[i].Titulo;
-            rtbNota.Text = Notas[i].Contenido;
+            if (cbIndex.Items.Count!=0)
+            {
+                ClearNota();
+                tbTitulo.Text = Notas[i].Titulo;
+                rtbNota.Text = Notas[i].Contenido;
+            }
         }
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
             int i = cbIndex.SelectedIndex;
 
-            Notas.RemoveAt(i);
-            cbIndex.Items.RemoveAt(i);
+            if (cbIndex.Items.Count != 0)
+            {
+                Notas.RemoveAt(i);
+                cbIndex.Items.RemoveAt(i);
+            }
+        }
 
+        private void ClearNota()
+        {
             tbTitulo.Text = "";
             rtbNota.Text = "";
         }
@@ -81,6 +92,11 @@ namespace Bloc_de_notas
                 }
             }
             return false;
+        }
+
+        private void AnyadirItem(String titulo)
+        {
+            cbIndex.Items.Add(titulo);
         }
     }
 }

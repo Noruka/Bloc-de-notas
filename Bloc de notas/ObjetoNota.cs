@@ -10,7 +10,7 @@ namespace Bloc_de_notas
         public string Contenido { get => contenido; set => contenido = value; }
         public string Titulo { get => titulo; set => titulo = value; }
 
-        public ObjetoNota(string contenido, string titulo)
+        public ObjetoNota(string titulo, string contenido)
         {
             this.Contenido = contenido;
             this.Titulo = titulo;
@@ -19,5 +19,14 @@ namespace Bloc_de_notas
         public ObjetoNota()
         {
         }
+
+        public void SetNota(String titulo, String texto) {
+
+            this.titulo = titulo;
+            this.contenido = texto;
+
+        }
+
+
     }
 }
