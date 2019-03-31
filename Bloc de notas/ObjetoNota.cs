@@ -20,6 +20,7 @@ namespace Bloc_de_notas
         {
         }
 
+        //funcion para modificar todos los parametros del objeto
         public void SetNota(String titulo, String texto) {
 
             this.titulo = titulo;
