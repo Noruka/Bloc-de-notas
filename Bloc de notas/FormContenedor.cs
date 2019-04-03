@@ -18,7 +18,7 @@ namespace Bloc_de_notas
         }
 
         //Esta funcion crea una nota nueva sin guardar automaticamente la que tienes presente.
-        //Basicamente Limpia la clase sobre la que se esta trabajando y limpia los paneles para insertar texto
+        //Basicamente limpia los paneles para insertar texto
         private void btnCrearNota_Click(object sender, EventArgs e)
         {
             ClearContenidos();
