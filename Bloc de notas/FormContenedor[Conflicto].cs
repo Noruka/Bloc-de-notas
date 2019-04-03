@@ -21,7 +21,8 @@ namespace Bloc_de_notas
         //Basicamente Limpia la clase sobre la que se esta trabajando y limpia los paneles para insertar texto
         private void btnCrearNota_Click(object sender, EventArgs e)
         {
-            ClearContenidos();
+            ClearNota();
+            nota = new ObjetoNota("Nueva Nota", "");
         }
 
         //Esta funcion guarda el objeto nota en la lista de objetos.
@@ -51,16 +52,12 @@ namespace Bloc_de_notas
                 }
 
                 Notas[pos].SetNota(tituloNotaActual, contenidoNotaActual);
-                MessageBox.Show("Sobreescrito nota existente con titulo: " + tituloNotaActual);
-                ClearContenidos();
             }
             else
             {
                 nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
                 Notas.Add(nota);
                 AnyadirItem(tituloNotaActual);
-                MessageBox.Show("Se ha creado la nota con titulo: " + tituloNotaActual);
-                ClearContenidos();
             }
         }
 
@@ -69,30 +66,26 @@ namespace Bloc_de_notas
         //o sobrescribiendo en caso de que otra nota tenga el mismo nombre.
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (cbIndex.Items.Count == 0)
+            int i = cbIndex.SelectedIndex;
+            if (i != -1)
             {
-                MessageBox.Show("No hay nada guardado en la lista");
-            }
-            else
-            {
-                if (cbIndex.SelectedIndex == -1)
-
+                if (cbIndex.Items.Count != 0)
                 {
-                    MessageBox.Show("Seleccione un contenido");
-                }
-                else
-                {
-                    if (ComprobarExiste(Notas[cbIndex.SelectedIndex].Titulo))
+                    if (ComprobarExiste(tbTitulo.Text))
                     {
-                        ClearContenidos();
-                        tbTitulo.Text = Notas[cbIndex.SelectedIndex].Titulo;
-                        rtbNota.Text = Notas[cbIndex.SelectedIndex].Contenido;
+                        ClearNota();
+                        tbTitulo.Text = Notas[i].Titulo;
+                        rtbNota.Text = Notas[i].Contenido;
                     }
                     else
                     {
                         MessageBox.Show("El contenido seleccionado no existe");
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un contenido");
             }
         }
 
@@ -105,12 +98,11 @@ namespace Bloc_de_notas
             {
                 Notas.RemoveAt(i);
                 cbIndex.Items.RemoveAt(i);
-                ClearContenidos();
             }
         }
 
         //Funcion que limpia los paneles de texto
-        private void ClearContenidos()
+        private void ClearNota()
         {
             tbTitulo.Text = "";
             rtbNota.Text = "";
