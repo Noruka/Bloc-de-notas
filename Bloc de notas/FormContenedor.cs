@@ -101,10 +101,18 @@ namespace Bloc_de_notas
         {
             int i = cbIndex.SelectedIndex;
 
-            if (cbIndex.Items.Count != 0)
+            if (cbIndex.Items.Count != 0 && i != -1)
             {
                 Notas.RemoveAt(i);
                 cbIndex.Items.RemoveAt(i);
+                if (cbIndex.Items.Count != 0)
+                {
+                    cbIndex.MaxDropDownItems = cbIndex.Items.Count;
+                }
+                else {
+                    cbIndex.Text = "";
+                }
+
                 ClearContenidos();
             }
         }
