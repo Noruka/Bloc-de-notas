@@ -60,7 +60,10 @@ namespace Bloc_de_notas
             toolStripCBBorrar.Items.RemoveAt(pos);
         }
 
-        //Cuando le das al boton de guardar
+        //Esta funcion guarda el objeto nota en la lista de objetos.
+        //Importa los textos de los paneles y comprueba si ya se ha creado una nota
+        //con ese texto. Si ya existe lo sobreescribira, si no lo guardara como una nota nueva
+        //Si no tiene titulo no dejara guardar la nota.
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String tituloNotaActual = tbTitulo.Text;
@@ -97,6 +100,9 @@ namespace Bloc_de_notas
             }
         }
 
+        //Aqui accedemos al array mediante el combobox para seleccionar una nota reciente y poder cargarla
+        //a los paneles para poder editarla. Si se modifica el titulo el boton de guardar la guardara como nota nueva
+        //o sobrescribiendo en caso de que otra nota tenga el mismo nombre.
         private void ToolStripCBLista_DropDownClosed(object sender, EventArgs e)
         {
             if (toolStripCBLista.Items.Count == 0)
@@ -126,6 +132,7 @@ namespace Bloc_de_notas
             }
         }
 
+        //Borra el objeto del array y del combobox seleccionada
         private void ToolStripCBBorrar_DropDownClosed(object sender, EventArgs e)
         {
             int i = toolStripCBBorrar.SelectedIndex;
