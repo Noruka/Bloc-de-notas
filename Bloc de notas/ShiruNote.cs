@@ -4,31 +4,67 @@ using System.Windows.Forms;
 
 namespace Bloc_de_notas
 {
-    public partial class ShiruNotas : Form
+    public partial class ShiruNote : Form
     {
-        //Aqui creo una lista de tipo ObjetoNota, para guardar las notas que se crean.
+        //Creamos un List para guardar los objetos de tipo ObjetoNota que contendran
+        //el titulo y el contenido.
         private List<ObjetoNota> Notas = new List<ObjetoNota>();
 
-        //Aqui inicializo el objeto nota para trabaar con él. Si tengo que crear una nota nueva la creo abajo.
+        //Creo el objeto nota para trabajar con él pero
+        //no lo inizializo
         private ObjetoNota nota;
 
-        public ShiruNotas()
+        public ShiruNote()
         {
             InitializeComponent();
         }
 
-        //Esta funcion crea una nota nueva sin guardar automaticamente la que tienes presente.
-        //Basicamente limpia los paneles para insertar texto
-        private void btnCrearNota_Click(object sender, EventArgs e)
+        //Boton del MenuStrip para limpiar los contenidos.
+        private void CrearNotaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearContenidos();
+        }
+
+        //Funcion que limpia los paneles de texto
+        private void ClearContenidos()
+        {
+            tbTitulo.Text = "";
+            rtbNota.Text = "";
+        }
+
+        //Comprueba si existe el objeto en el array
+        private Boolean ComprobarExiste(String t)
+        {
+            for (int i = 0; i < Notas.Count; i++)
+            {
+                if (Notas[i].Titulo.Equals(t))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //Funcion para añadir notas al combobox.
+        private void AnyadirItemsCB(String titulo)
+        {
+            toolStripCBLista.Items.Add(titulo);
+            toolStripCBBorrar.Items.Add(titulo);
+        }
+
+        //Funcion para borrar notas del combobox y el List
+        private void BorrarItemsCB(int pos)
+        {
+            Notas.RemoveAt(pos);
+            toolStripCBLista.Items.RemoveAt(pos);
+            toolStripCBBorrar.Items.RemoveAt(pos);
         }
 
         //Esta funcion guarda el objeto nota en la lista de objetos.
         //Importa los textos de los paneles y comprueba si ya se ha creado una nota
         //con ese texto. Si ya existe lo sobreescribira, si no lo guardara como una nota nueva
         //Si no tiene titulo no dejara guardar la nota.
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String tituloNotaActual = tbTitulo.Text;
             String contenidoNotaActual = rtbNota.Text;
@@ -58,7 +94,7 @@ namespace Bloc_de_notas
             {
                 nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
                 Notas.Add(nota);
-                AnyadirItem(tituloNotaActual);
+                AnyadirItemsCB(tituloNotaActual);
                 MessageBox.Show("Se ha creado la nota con titulo: " + tituloNotaActual);
                 ClearContenidos();
             }
@@ -67,26 +103,26 @@ namespace Bloc_de_notas
         //Aqui accedemos al array mediante el combobox para seleccionar una nota reciente y poder cargarla
         //a los paneles para poder editarla. Si se modifica el titulo el boton de guardar la guardara como nota nueva
         //o sobrescribiendo en caso de que otra nota tenga el mismo nombre.
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void ToolStripCBLista_DropDownClosed(object sender, EventArgs e)
         {
-            if (cbIndex.Items.Count == 0)
+            if (toolStripCBLista.Items.Count == 0)
             {
                 MessageBox.Show("No hay nada guardado en la lista");
             }
             else
             {
-                if (cbIndex.SelectedIndex == -1)
+                if (toolStripCBLista.SelectedIndex == -1)
 
                 {
                     MessageBox.Show("Seleccione un contenido");
                 }
                 else
                 {
-                    if (ComprobarExiste(Notas[cbIndex.SelectedIndex].Titulo))
+                    if (ComprobarExiste(Notas[toolStripCBLista.SelectedIndex].Titulo))
                     {
                         ClearContenidos();
-                        tbTitulo.Text = Notas[cbIndex.SelectedIndex].Titulo;
-                        rtbNota.Text = Notas[cbIndex.SelectedIndex].Contenido;
+                        tbTitulo.Text = Notas[toolStripCBLista.SelectedIndex].Titulo;
+                        rtbNota.Text = Notas[toolStripCBLista.SelectedIndex].Contenido;
                     }
                     else
                     {
@@ -97,50 +133,27 @@ namespace Bloc_de_notas
         }
 
         //Borra el objeto del array y del combobox seleccionada
-        private void btnBorrar_Click(object sender, EventArgs e)
+        private void ToolStripCBBorrar_DropDownClosed(object sender, EventArgs e)
         {
-            int i = cbIndex.SelectedIndex;
+            int i = toolStripCBBorrar.SelectedIndex;
 
-            if (cbIndex.Items.Count != 0 && i != -1)
+            if (toolStripCBLista.Items.Count != 0 && i != -1)
             {
-                Notas.RemoveAt(i);
-                cbIndex.Items.RemoveAt(i);
-                if (cbIndex.Items.Count != 0)
+                MessageBox.Show("Se ha borrado " + Notas[i].Titulo);
+                BorrarItemsCB(i);
+
+                //Limita el tamaño y limpia el texto del combobox.
+                if (toolStripCBLista.Items.Count != 0)
                 {
-                    cbIndex.MaxDropDownItems = cbIndex.Items.Count;
+                    toolStripCBLista.MaxDropDownItems = toolStripCBLista.Items.Count;
                 }
-                else {
-                    cbIndex.Text = "";
+                else
+                {
+                    toolStripCBLista.Text = "";
                 }
 
                 ClearContenidos();
             }
-        }
-
-        //Funcion que limpia los paneles de texto
-        private void ClearContenidos()
-        {
-            tbTitulo.Text = "";
-            rtbNota.Text = "";
-        }
-
-        //Comprueba si existe el objeto en el array
-        private Boolean ComprobarExiste(String t)
-        {
-            for (int i = 0; i < Notas.Count; i++)
-            {
-                if (Notas[i].Titulo.Equals(t))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        //Funcion para añadir notas al combobox.
-        private void AnyadirItem(String titulo)
-        {
-            cbIndex.Items.Add(titulo);
         }
     }
 }

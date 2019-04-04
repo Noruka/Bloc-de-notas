@@ -13,7 +13,7 @@ namespace Bloc_de_notas
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ShiruNotas());
+            Application.Run(new ShiruNote());
         }
     }
 }
