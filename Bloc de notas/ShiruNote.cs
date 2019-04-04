@@ -6,8 +6,12 @@ namespace Bloc_de_notas
 {
     public partial class ShiruNote : Form
     {
+        //Creamos un List para guardar los objetos de tipo ObjetoNota que contendran
+        //el titulo y el contenido.
         private List<ObjetoNota> Notas = new List<ObjetoNota>();
 
+        //Creo el objeto nota para trabajar con él pero
+        //no lo inizializo
         private ObjetoNota nota;
 
         public ShiruNote()
@@ -15,6 +19,7 @@ namespace Bloc_de_notas
             InitializeComponent();
         }
 
+        //Boton del MenuStrip para limpiar los contenidos.
         private void CrearNotaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearContenidos();
@@ -47,6 +52,7 @@ namespace Bloc_de_notas
             toolStripCBBorrar.Items.Add(titulo);
         }
 
+        //Funcion para borrar notas del combobox y el List
         private void BorrarItemsCB(int pos)
         {
             Notas.RemoveAt(pos);
@@ -54,6 +60,7 @@ namespace Bloc_de_notas
             toolStripCBBorrar.Items.RemoveAt(pos);
         }
 
+        //Cuando le das al boton de guardar
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String tituloNotaActual = tbTitulo.Text;
