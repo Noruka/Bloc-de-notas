@@ -295,13 +295,10 @@ namespace Bloc_de_notas
                     string line;
                     while ((line = streamReader.ReadLine()) != null)
                     {
-                        if (!line.Equals("!¡"))
-                        {
                             if (!string.IsNullOrWhiteSpace(line))
                             {
                                 streamWriter.WriteLine(line);
                             }
-                        }
                     }
                 }
                 File.Copy(tempFileName, nombreFichero, true);
