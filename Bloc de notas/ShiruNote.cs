@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Bloc_de_notas
 {
     public partial class ShiruNote : Form
     {
+        public ShiruNote()
+        {
+            InitializeComponent();
+            CargarFichero();
+        }
+
+        //Ruta del fichero donde se van a guardar las notas.
+        private String nombreFichero = "shirunotes.txt";
+
         //Creamos un List para guardar los objetos de tipo ObjetoNota que contendran
         //el titulo y el contenido.
         private List<ObjetoNota> Notas = new List<ObjetoNota>();
@@ -13,11 +24,6 @@ namespace Bloc_de_notas
         //Creo el objeto nota para trabajar con él pero
         //no lo inizializo
         private ObjetoNota nota;
-
-        public ShiruNote()
-        {
-            InitializeComponent();
-        }
 
         //Boton del MenuStrip para limpiar los contenidos.
         private void CrearNotaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -71,7 +77,13 @@ namespace Bloc_de_notas
 
             if (tituloNotaActual.Equals(""))
             {
+                //No guarda
                 MessageBox.Show("No has insertado titulo");
+            }
+            else if (tituloNotaActual.Contains("$"))
+            {
+                //No guardar
+                MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $");
             }
             else if (ComprobarExiste(tituloNotaActual))
             {
@@ -85,16 +97,16 @@ namespace Bloc_de_notas
                         break;
                     }
                 }
-
-                Notas[pos].SetNota(tituloNotaActual, contenidoNotaActual);
-                MessageBox.Show("Sobreescrito nota existente con titulo: " + tituloNotaActual);
-                ClearContenidos();
+                //guardar en nota ya creada (sobreescribir)
+                sobreEscribir(tituloNotaActual, contenidoNotaActual, pos);
             }
             else
             {
+                //crea nota y la guarda
                 nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
                 Notas.Add(nota);
                 AnyadirItemsCB(tituloNotaActual);
+                GuardarFichero(tituloNotaActual, contenidoNotaActual);
                 MessageBox.Show("Se ha creado la nota con titulo: " + tituloNotaActual);
                 ClearContenidos();
             }
@@ -140,6 +152,7 @@ namespace Bloc_de_notas
             if (toolStripCBLista.Items.Count != 0 && i != -1)
             {
                 MessageBox.Show("Se ha borrado " + Notas[i].Titulo);
+                BorrarItemsFichero(Notas[i].Titulo);
                 BorrarItemsCB(i);
 
                 //Limita el tamaño y limpia el texto del combobox.
@@ -153,6 +166,136 @@ namespace Bloc_de_notas
                 }
 
                 ClearContenidos();
+            }
+        }
+
+        //Funcion para sobreescribir un fichero.
+        private void sobreEscribir(String tituloNotaActual, String contenidoNotaActual, int pos)
+        {
+            Notas[pos].SetNota(tituloNotaActual, contenidoNotaActual);
+            replaceString(tituloNotaActual, contenidoNotaActual);
+            MessageBox.Show("Sobreescrito nota existente con titulo: " + tituloNotaActual);
+            ClearContenidos();
+        }
+
+        //funcion para guardar nuevas notas en el programa, no el fichero.
+        private void guardarNuevaNota(String tituloNotaActual, String contenidoNotaActual)
+        {
+            nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
+            Notas.Add(nota);
+            AnyadirItemsCB(tituloNotaActual);
+        }
+
+        //Funciones de fichero ------------------------------------------
+
+        //Funcion para guardar texto en el fichero en el formato local
+        //para poder volver a leerlo luego.
+        private void GuardarFichero(String titulo, String contenido)
+        {
+            //fichero = File.AppendText(nombreFichero+".txt");
+
+            StreamWriter sw;
+
+            sw = File.AppendText(nombreFichero);
+
+            sw.WriteLine(titulo + "$" + contenido);
+
+            sw.Close();
+        }
+
+        //Esta funcion borra las notas del fichero, dejando una linea en blanco
+        //que al cerrar el programa limpiar el archivo para que sea mas limpio
+        private void BorrarItemsFichero(String titulo)
+        {
+            StreamReader sr = new StreamReader(nombreFichero);
+            String[] lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+            sr.Close();
+
+            StreamWriter sw = new StreamWriter(nombreFichero);
+            for (int i = 0; i < lineas.Length; i++)
+            {
+                String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                if (fila[0].Equals(titulo))
+                {
+                    lineas[i] = String.Empty;
+                }
+                sw.WriteLine(lineas[i]);
+            }
+            sw.Close();
+        }
+
+        //Funcion que reeplaza el contenido de las notas en un fichero
+        //Funciona separando las filas del archivo en un array y luego comprueba
+        //por fila si coincide el titulo que se le pasa. Si es asi
+        //separa el titulo del y el contenido y luego reeplaza el contenido
+        //antiguo con el nuevo
+        private void replaceString(String titulo, String reemplazar)
+        {
+            StreamReader sr = new StreamReader(nombreFichero);
+            String[] lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+            sr.Close();
+
+            StreamWriter sw = new StreamWriter(nombreFichero);
+            for (int i = 0; i < lineas.Length; i++)
+            {
+                if (lineas[i].Contains(titulo))
+                {
+                    String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                    lineas[i] = lineas[i].Replace(fila[1], reemplazar);
+                }
+                sw.WriteLine(lineas[i]);
+            }
+            sw.Close();
+        }
+
+        //Esta funcion se ejecuta al iniciar el programa para cargar las notas
+        //guardadas en el fichero local. Si no hay ningun fichero ejecutara el programa directamente
+        private void CargarFichero()
+        {
+            String[] lineas = null;
+
+            try
+            {
+                StreamReader sr = new StreamReader(nombreFichero);
+                lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+                sr.Close();
+
+                for (int i = 0; i < lineas.Length - 1; i++)
+                {
+                    if (lineas[i] != String.Empty)
+                    {
+                        String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                        guardarNuevaNota(fila[0], fila[1]);
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        //Funcion para limpiar las filas en blanco dejadas al borrar notas
+        //Copiado de (https://stackoverflow.com/questions/6480058/remove-blank-lines-in-a-text-file)
+        private void ShiruNote_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var tempFileName = Path.GetTempFileName();
+            try
+            {
+                using (var streamReader = new StreamReader(nombreFichero))
+                using (var streamWriter = new StreamWriter(tempFileName))
+                {
+                    string line;
+                    while ((line = streamReader.ReadLine()) != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                            streamWriter.WriteLine(line);
+                    }
+                }
+                File.Copy(tempFileName, nombreFichero, true);
+            }
+            finally
+            {
+                File.Delete(tempFileName);
             }
         }
     }
