@@ -8,7 +8,7 @@ namespace Bloc_de_notas
 {
     public partial class ShiruNote : Form
     {
-        //v0.7.3
+        //v0.7.4
 
         public ShiruNote()
         {
