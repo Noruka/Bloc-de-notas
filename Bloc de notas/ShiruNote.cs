@@ -9,11 +9,16 @@ namespace Bloc_de_notas
     public partial class ShiruNote : Form
     {
         //v0.7.1
+
         public ShiruNote()
         {
             InitializeComponent();
             CargarFichero();
         }
+
+        //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
+        String FINFICHERO = "!¡";
+        char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
         private String nombreFichero = "shirunotes.txt";
@@ -81,10 +86,10 @@ namespace Bloc_de_notas
                 //No guarda
                 MessageBox.Show("No has insertado titulo");
             }
-            else if (tituloNotaActual.Contains("$"))
+            else if (tituloNotaActual.Contains("$") || tituloNotaActual.Contains("!") || tituloNotaActual.Contains("¡"))
             {
                 //No guardar
-                MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $");
+                MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $, !, ¡");
             }
             else if (ComprobarExiste(tituloNotaActual))
             {
@@ -107,7 +112,7 @@ namespace Bloc_de_notas
                 nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
                 Notas.Add(nota);
                 AnyadirItemsCB(tituloNotaActual);
-                GuardarFichero(tituloNotaActual, contenidoNotaActual);
+                GuardarNota(tituloNotaActual, contenidoNotaActual);
                 MessageBox.Show("Se ha creado la nota con titulo: " + tituloNotaActual);
                 ClearContenidos();
             }
@@ -191,7 +196,7 @@ namespace Bloc_de_notas
 
         //Funcion para guardar texto en el fichero en el formato local
         //para poder volver a leerlo luego.
-        private void GuardarFichero(String titulo, String contenido)
+        private void GuardarNota(String titulo, String contenido)
         {
             //fichero = File.AppendText(nombreFichero+".txt");
 
@@ -199,7 +204,7 @@ namespace Bloc_de_notas
 
             sw = File.AppendText(nombreFichero);
 
-            sw.WriteLine(titulo + "$" + contenido);
+            sw.WriteLine(titulo + SEPARADOR + contenido + FINFICHERO);
 
             sw.Close();
         }
@@ -209,17 +214,18 @@ namespace Bloc_de_notas
         private void BorrarItemsFichero(String titulo)
         {
             StreamReader sr = new StreamReader(nombreFichero);
-            String[] lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+            String[] lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
             sr.Close();
 
             StreamWriter sw = new StreamWriter(nombreFichero);
             for (int i = 0; i < lineas.Length; i++)
             {
-                String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
                 if (fila[0].Equals(titulo))
                 {
                     lineas[i] = String.Empty;
                 }
+                lineas[i] += "!¡";
                 sw.WriteLine(lineas[i]);
             }
             sw.Close();
@@ -232,8 +238,9 @@ namespace Bloc_de_notas
         //antiguo con el nuevo
         private void replaceString(String titulo, String reemplazar)
         {
+            reemplazar += "!¡";
             StreamReader sr = new StreamReader(nombreFichero);
-            String[] lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+            String[] lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
             sr.Close();
 
             StreamWriter sw = new StreamWriter(nombreFichero);
@@ -241,7 +248,7 @@ namespace Bloc_de_notas
             {
                 if (lineas[i].Contains(titulo))
                 {
-                    String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                    String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
                     lineas[i] = lineas[i].Replace(fila[1], reemplazar);
                 }
                 sw.WriteLine(lineas[i]);
@@ -258,14 +265,14 @@ namespace Bloc_de_notas
             try
             {
                 StreamReader sr = new StreamReader(nombreFichero);
-                lineas = Regex.Split(sr.ReadToEnd(), "\r\n");
+                lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
                 sr.Close();
 
                 for (int i = 0; i < lineas.Length - 1; i++)
                 {
                     if (lineas[i] != String.Empty)
                     {
-                        String[] fila = lineas[i].Split(new char[] { '$' }, 2);
+                        String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
                         guardarNuevaNota(fila[0], fila[1]);
                     }
                 }
@@ -288,8 +295,13 @@ namespace Bloc_de_notas
                     string line;
                     while ((line = streamReader.ReadLine()) != null)
                     {
-                        if (!string.IsNullOrWhiteSpace(line))
-                            streamWriter.WriteLine(line);
+                        if (!line.Equals("!¡"))
+                        {
+                            if (!string.IsNullOrWhiteSpace(line))
+                            {
+                                streamWriter.WriteLine(line);
+                            }
+                        }
                     }
                 }
                 File.Copy(tempFileName, nombreFichero, true);

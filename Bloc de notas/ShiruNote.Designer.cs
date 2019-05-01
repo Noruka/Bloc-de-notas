@@ -128,7 +128,7 @@
             this.Controls.Add(this.msMenuHorizontal);
             this.MainMenuStrip = this.msMenuHorizontal;
             this.Name = "ShiruNote";
-            this.Text = "ShiruNote 0.7";
+            this.Text = "ShiruNote 0.7.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShiruNote_FormClosing);
             this.msMenuHorizontal.ResumeLayout(false);
             this.msMenuHorizontal.PerformLayout();
