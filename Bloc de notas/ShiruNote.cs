@@ -17,8 +17,9 @@ namespace Bloc_de_notas
         }
 
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
-        String FINFICHERO = "!¡";
-        char SEPARADOR = '$';
+        private String FINFICHERO = "!¡";
+
+        private char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
         private String nombreFichero = "shirunotes.txt";
