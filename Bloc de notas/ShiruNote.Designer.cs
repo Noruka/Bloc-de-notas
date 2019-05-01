@@ -55,7 +55,7 @@
             this.Controls.Add(this.rtbNota);
             this.Controls.Add(this.tbTitulo);
             this.Name = "ShiruNote";
-            this.Text = "ShiruNote 0.7.2";
+            this.Text = "ShiruNote 0.7.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShiruNote_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
