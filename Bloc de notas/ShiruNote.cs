@@ -17,9 +17,8 @@ namespace Bloc_de_notas
         }
 
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
-        private String FINFICHERO = "!¡";
-
-        private char SEPARADOR = '$';
+        String FINFICHERO = "!¡";
+        char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
         private String nombreFichero = "shirunotes.txt";
@@ -306,6 +305,9 @@ namespace Bloc_de_notas
                     }
                 }
                 File.Copy(tempFileName, nombreFichero, true);
+            }
+            catch {
+
             }
             finally
             {
