@@ -20,8 +20,7 @@ namespace Bloc_de_notas
 
         //--------
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
-        private String FINFICHERO = "END!";
-
+        private String FINFICHERO = "<END>";
         private char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
