@@ -101,7 +101,7 @@
             // tbTitulo
             // 
             this.tbTitulo.Location = new System.Drawing.Point(16, 33);
-            this.tbTitulo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbTitulo.Margin = new System.Windows.Forms.Padding(4);
             this.tbTitulo.Name = "tbTitulo";
             this.tbTitulo.Size = new System.Drawing.Size(580, 22);
             this.tbTitulo.TabIndex = 1;
@@ -109,7 +109,7 @@
             // rtbNota
             // 
             this.rtbNota.Location = new System.Drawing.Point(17, 66);
-            this.rtbNota.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtbNota.Margin = new System.Windows.Forms.Padding(4);
             this.rtbNota.Name = "rtbNota";
             this.rtbNota.Size = new System.Drawing.Size(579, 472);
             this.rtbNota.TabIndex = 2;
@@ -130,10 +130,9 @@
             this.Controls.Add(this.tbTitulo);
             this.Controls.Add(this.msMenuHorizontal);
             this.MainMenuStrip = this.msMenuHorizontal;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ShiruNote";
-            this.Text = "ShiruNote 0.7.5";
-            //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShiruNote_FormClosing);
+            this.Text = "ShiruNote x";
             this.msMenuHorizontal.ResumeLayout(false);
             this.msMenuHorizontal.PerformLayout();
             this.ResumeLayout(false);

@@ -8,20 +8,26 @@ namespace Bloc_de_notas
 {
     public partial class ShiruNote : Form
     {
-        //v0.7.5
-
         public ShiruNote()
         {
             InitializeComponent();
+            //version
+            this.Text = "ShiruNote " + "0.7.6";
             CargarFichero();
         }
 
+        
+
+        //--------
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
         private String FINFICHERO = "END!";
+
         private char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
         private String nombreFichero = "shirunotes.txt";
+
+        //---------
 
         //Creamos un List para guardar los objetos de tipo ObjetoNota que contendran
         //el titulo y el contenido.
@@ -187,11 +193,9 @@ namespace Bloc_de_notas
         //funcion para guardar nuevas notas en el programa, no el fichero.
         private void guardarNuevaNota(String tituloNotaActual, String contenidoNotaActual)
         {
-            
-                nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
-                Notas.Add(nota);
-                AnyadirItemsCB(tituloNotaActual);
-            
+            nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
+            Notas.Add(nota);
+            AnyadirItemsCB(tituloNotaActual);
         }
 
         //Funciones de fichero ------------------------------------------
@@ -211,8 +215,10 @@ namespace Bloc_de_notas
             sw.Close();
         }
 
-        //Esta funcion borra las notas del fichero, dejando una linea en blanco
-        //que al cerrar el programa limpiar el archivo para que sea mas limpio
+        //Esta funcion borra las notas del fichero. Lo hace separando cada nota
+        //y luego separando cada titulo de su contenido, comprueba el titulo
+        //y si coincide con el titulo enviado borrara la nota del primer array.
+        //Al finalizar la vuelta escribe en el fichero.
         private void BorrarItemsFichero(String titulo)
         {
             StreamReader sr = new StreamReader(nombreFichero);
@@ -227,15 +233,14 @@ namespace Bloc_de_notas
                 {
                     lineas[i] = String.Empty;
                 }
-                else if(!string.IsNullOrWhiteSpace(lineas[i])) {
+                else if (!string.IsNullOrWhiteSpace(lineas[i]))
+                {
                     lineas[i] += FINFICHERO;
                 }
                 if (!string.IsNullOrWhiteSpace(lineas[i]))
                 {
                     sw.WriteLine(lineas[i]);
                 }
-                
-
             }
             sw.Close();
         }
@@ -243,7 +248,7 @@ namespace Bloc_de_notas
         //Funcion que reeplaza el contenido de las notas en un fichero
         //Funciona separando las filas del archivo en un array y luego comprueba
         //por fila si coincide el titulo que se le pasa. Si es asi
-        //separa el titulo del y el contenido y luego reeplaza el contenido
+        //separa el titulo del contenido y luego reeplaza el contenido
         //antiguo con el nuevo
         private void replaceString(String titulo, String reemplazar)
         {
