@@ -8,7 +8,7 @@ namespace Bloc_de_notas
 {
     public partial class ShiruNote : Form
     {
-        //v0.7.4
+        //v0.7.5
 
         public ShiruNote()
         {
@@ -17,8 +17,9 @@ namespace Bloc_de_notas
         }
 
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
-        String FINFICHERO = "!¡";
-        char SEPARADOR = '$';
+        private String FINFICHERO = "END!";
+
+        private char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
         private String nombreFichero = "shirunotes.txt";
@@ -86,10 +87,10 @@ namespace Bloc_de_notas
                 //No guarda
                 MessageBox.Show("No has insertado titulo");
             }
-            else if (tituloNotaActual.Contains("$") || tituloNotaActual.Contains("!") || tituloNotaActual.Contains("¡"))
+            else if (tituloNotaActual.Contains("$") || tituloNotaActual.Contains("/") || tituloNotaActual.Contains("*"))
             {
                 //No guardar
-                MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $, !, ¡");
+                MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $, /, *");
             }
             else if (ComprobarExiste(tituloNotaActual))
             {
@@ -187,9 +188,12 @@ namespace Bloc_de_notas
         //funcion para guardar nuevas notas en el programa, no el fichero.
         private void guardarNuevaNota(String tituloNotaActual, String contenidoNotaActual)
         {
-            nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
-            Notas.Add(nota);
-            AnyadirItemsCB(tituloNotaActual);
+            if (!contenidoNotaActual.EndsWith("END!"))
+            {
+                nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual + FINFICHERO);
+                Notas.Add(nota);
+                AnyadirItemsCB(tituloNotaActual);
+            }
         }
 
         //Funciones de fichero ------------------------------------------
@@ -225,8 +229,15 @@ namespace Bloc_de_notas
                 {
                     lineas[i] = String.Empty;
                 }
-                lineas[i] += "!¡";
-                sw.WriteLine(lineas[i]);
+                else if(!string.IsNullOrWhiteSpace(lineas[i])) {
+                    lineas[i] += FINFICHERO;
+                }
+                if (!string.IsNullOrWhiteSpace(lineas[i]))
+                {
+                    sw.WriteLine(lineas[i]);
+                }
+                
+
             }
             sw.Close();
         }
@@ -238,7 +249,7 @@ namespace Bloc_de_notas
         //antiguo con el nuevo
         private void replaceString(String titulo, String reemplazar)
         {
-            reemplazar += "!¡";
+            reemplazar += FINFICHERO;
             StreamReader sr = new StreamReader(nombreFichero);
             String[] lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
             sr.Close();
@@ -279,39 +290,6 @@ namespace Bloc_de_notas
             }
             catch
             {
-            }
-        }
-
-        //Funcion para limpiar las filas en blanco dejadas al borrar notas
-        //Copiado de (https://stackoverflow.com/questions/6480058/remove-blank-lines-in-a-text-file)
-        private void ShiruNote_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            var tempFileName = Path.GetTempFileName();
-            try
-            {
-                using (var streamReader = new StreamReader(nombreFichero))
-                using (var streamWriter = new StreamWriter(tempFileName))
-                {
-                    string line;
-                    while ((line = streamReader.ReadLine()) != null)
-                    {
-                        if (!line.Equals("!¡"))
-                        {
-                            if (!string.IsNullOrWhiteSpace(line))
-                            {
-                                streamWriter.WriteLine(line);
-                            }
-                        }
-                    }
-                }
-                File.Copy(tempFileName, nombreFichero, true);
-            }
-            catch {
-
-            }
-            finally
-            {
-                File.Delete(tempFileName);
             }
         }
     }

@@ -51,21 +51,22 @@
             this.borrarToolStripMenuItem});
             this.msMenuHorizontal.Location = new System.Drawing.Point(0, 0);
             this.msMenuHorizontal.Name = "msMenuHorizontal";
-            this.msMenuHorizontal.Size = new System.Drawing.Size(460, 24);
+            this.msMenuHorizontal.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.msMenuHorizontal.Size = new System.Drawing.Size(613, 28);
             this.msMenuHorizontal.TabIndex = 0;
             this.msMenuHorizontal.Text = "menuStrip1";
             // 
             // crearNotaToolStripMenuItem
             // 
             this.crearNotaToolStripMenuItem.Name = "crearNotaToolStripMenuItem";
-            this.crearNotaToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.crearNotaToolStripMenuItem.Size = new System.Drawing.Size(93, 24);
             this.crearNotaToolStripMenuItem.Text = "Crear Nota";
             this.crearNotaToolStripMenuItem.Click += new System.EventHandler(this.CrearNotaToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
             this.guardarToolStripMenuItem.Text = "Guardar";
             this.guardarToolStripMenuItem.Click += new System.EventHandler(this.GuardarToolStripMenuItem_Click);
             // 
@@ -74,13 +75,13 @@
             this.editarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripCBLista});
             this.editarToolStripMenuItem.Name = "editarToolStripMenuItem";
-            this.editarToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.editarToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
             this.editarToolStripMenuItem.Text = "Editar";
             // 
             // toolStripCBLista
             // 
             this.toolStripCBLista.Name = "toolStripCBLista";
-            this.toolStripCBLista.Size = new System.Drawing.Size(121, 23);
+            this.toolStripCBLista.Size = new System.Drawing.Size(121, 28);
             this.toolStripCBLista.DropDownClosed += new System.EventHandler(this.ToolStripCBLista_DropDownClosed);
             // 
             // borrarToolStripMenuItem
@@ -88,27 +89,29 @@
             this.borrarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripCBBorrar});
             this.borrarToolStripMenuItem.Name = "borrarToolStripMenuItem";
-            this.borrarToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.borrarToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
             this.borrarToolStripMenuItem.Text = "Borrar";
             // 
             // toolStripCBBorrar
             // 
             this.toolStripCBBorrar.Name = "toolStripCBBorrar";
-            this.toolStripCBBorrar.Size = new System.Drawing.Size(121, 23);
+            this.toolStripCBBorrar.Size = new System.Drawing.Size(121, 28);
             this.toolStripCBBorrar.DropDownClosed += new System.EventHandler(this.ToolStripCBBorrar_DropDownClosed);
             // 
             // tbTitulo
             // 
-            this.tbTitulo.Location = new System.Drawing.Point(12, 27);
+            this.tbTitulo.Location = new System.Drawing.Point(16, 33);
+            this.tbTitulo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbTitulo.Name = "tbTitulo";
-            this.tbTitulo.Size = new System.Drawing.Size(436, 20);
+            this.tbTitulo.Size = new System.Drawing.Size(580, 22);
             this.tbTitulo.TabIndex = 1;
             // 
             // rtbNota
             // 
-            this.rtbNota.Location = new System.Drawing.Point(13, 54);
+            this.rtbNota.Location = new System.Drawing.Point(17, 66);
+            this.rtbNota.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.rtbNota.Name = "rtbNota";
-            this.rtbNota.Size = new System.Drawing.Size(435, 384);
+            this.rtbNota.Size = new System.Drawing.Size(579, 472);
             this.rtbNota.TabIndex = 2;
             this.rtbNota.Text = "";
             // 
@@ -120,16 +123,17 @@
             // 
             // ShiruNote
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 450);
+            this.ClientSize = new System.Drawing.Size(613, 554);
             this.Controls.Add(this.rtbNota);
             this.Controls.Add(this.tbTitulo);
             this.Controls.Add(this.msMenuHorizontal);
             this.MainMenuStrip = this.msMenuHorizontal;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ShiruNote";
-            this.Text = "ShiruNote 0.7.4";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShiruNote_FormClosing);
+            this.Text = "ShiruNote 0.7.5";
+            //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShiruNote_FormClosing);
             this.msMenuHorizontal.ResumeLayout(false);
             this.msMenuHorizontal.PerformLayout();
             this.ResumeLayout(false);
