@@ -265,7 +265,14 @@ namespace Bloc_de_notas
                     String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
                     lineas[i] = lineas[i].Replace(fila[1], reemplazar);
                 }
-                sw.WriteLine(lineas[i]);
+                else if (!string.IsNullOrWhiteSpace(lineas[i]))
+                {
+                    lineas[i] += FINFICHERO;
+                }
+                if (!string.IsNullOrWhiteSpace(lineas[i]))
+                {
+                    sw.WriteLine(lineas[i]);
+                }
             }
             sw.Close();
         }
