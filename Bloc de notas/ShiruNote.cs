@@ -18,7 +18,6 @@ namespace Bloc_de_notas
 
         //config (CAMBIAR ESTO PUEDE ROMPER ARCHIVOS YA EXISTENTES)
         private String FINFICHERO = "END!";
-
         private char SEPARADOR = '$';
 
         //Ruta del fichero donde se van a guardar las notas.
@@ -188,12 +187,11 @@ namespace Bloc_de_notas
         //funcion para guardar nuevas notas en el programa, no el fichero.
         private void guardarNuevaNota(String tituloNotaActual, String contenidoNotaActual)
         {
-            if (!contenidoNotaActual.EndsWith("END!"))
-            {
-                nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual + FINFICHERO);
+            
+                nota = new ObjetoNota(tituloNotaActual, contenidoNotaActual);
                 Notas.Add(nota);
                 AnyadirItemsCB(tituloNotaActual);
-            }
+            
         }
 
         //Funciones de fichero ------------------------------------------
