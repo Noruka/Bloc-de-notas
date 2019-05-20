@@ -11,7 +11,7 @@ namespace Bloc_de_notas
         {
             InitializeComponent();
             //version
-            this.Text = "ShiruNote " + "0.7.6";
+            this.Text = "ShiruNote " + "0.8.1";
             //CargarFichero();
             CargarBD();
         }
@@ -92,11 +92,6 @@ namespace Bloc_de_notas
                 //No guarda
                 MessageBox.Show("No has insertado titulo");
             }
-            //else if (tituloNotaActual.Contains("$") || tituloNotaActual.Contains("/") || tituloNotaActual.Contains("*"))
-            //{
-            //    //No guardar
-            //    MessageBox.Show("El titulo insertado contiene caracteres invalidos ej. $, /, *");
-            //}
             else if (ComprobarExiste(tituloNotaActual))
             {
                 int pos = 0;
@@ -111,7 +106,7 @@ namespace Bloc_de_notas
                 }
                 //guardar en nota ya creada (sobreescribir)
                 sobreEscribir(tituloNotaActual, contenidoNotaActual, pos);
-                UpdateBD();
+                UpdateBD(tituloNotaActual, contenidoNotaActual);
             }
             else
             {
@@ -166,8 +161,9 @@ namespace Bloc_de_notas
             if (toolStripCBLista.Items.Count != 0 && i != -1)
             {
                 MessageBox.Show("Se ha borrado " + Notas[i].Titulo);
-                //BorrarItemsFichero(Notas[i].Titulo);
+                BorrarNotaBD(Notas[i].Titulo);
                 BorrarItemsCB(i);
+                
 
                 //Limita el tamaño y limpia el texto del combobox.
                 if (toolStripCBLista.Items.Count != 0)
@@ -200,111 +196,6 @@ namespace Bloc_de_notas
             AnyadirItemsCB(tituloNotaActual);
         }
 
-        //Funciones de fichero ------------------------------------------
-
-        //Funcion para guardar texto en el fichero en el formato local
-        //para poder volver a leerlo luego.
-        //private void GuardarNota(String titulo, String contenido)
-        //{
-        //    //fichero = File.AppendText(nombreFichero+".txt");
-
-        //    StreamWriter sw;
-
-        //    sw = File.AppendText(nombreFichero);
-
-        //    sw.WriteLine(titulo + SEPARADOR + contenido + FINFICHERO);
-
-        //    sw.Close();
-        //}
-
-        //Esta funcion borra las notas del fichero. Lo hace separando cada nota
-        //y luego separando cada titulo de su contenido, comprueba el titulo
-        //y si coincide con el titulo enviado borrara la nota del primer array.
-        //Al finalizar la vuelta escribe en el fichero.
-        //private void BorrarItemsFichero(String titulo)
-        //{
-        //    StreamReader sr = new StreamReader(nombreFichero);
-        //    String[] lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
-        //    sr.Close();
-
-        //    StreamWriter sw = new StreamWriter(nombreFichero);
-        //    for (int i = 0; i < lineas.Length; i++)
-        //    {
-        //        String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
-        //        if (fila[0].Equals(titulo))
-        //        {
-        //            lineas[i] = String.Empty;
-        //        }
-        //        else if (!string.IsNullOrWhiteSpace(lineas[i]))
-        //        {
-        //            lineas[i] += FINFICHERO;
-        //        }
-        //        if (!string.IsNullOrWhiteSpace(lineas[i]))
-        //        {
-        //            sw.WriteLine(lineas[i]);
-        //        }
-        //    }
-        //    sw.Close();
-        //}
-
-        //Funcion que reeplaza el contenido de las notas en un fichero
-        //Funciona separando las filas del archivo en un array y luego comprueba
-        //por fila si coincide el titulo que se le pasa. Si es asi
-        //separa el titulo del contenido y luego reeplaza el contenido
-        //antiguo con el nuevo
-        //private void replaceString(String titulo, String reemplazar)
-        //{
-        //    reemplazar += FINFICHERO;
-        //    StreamReader sr = new StreamReader(nombreFichero);
-        //    String[] lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
-        //    sr.Close();
-
-        //    StreamWriter sw = new StreamWriter(nombreFichero);
-        //    for (int i = 0; i < lineas.Length; i++)
-        //    {
-        //        if (lineas[i].Contains(titulo))
-        //        {
-        //            String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
-        //            lineas[i] = lineas[i].Replace(fila[1], reemplazar);
-        //        }
-        //        else if (!string.IsNullOrWhiteSpace(lineas[i]))
-        //        {
-        //            lineas[i] += FINFICHERO;
-        //        }
-        //        if (!string.IsNullOrWhiteSpace(lineas[i]))
-        //        {
-        //            sw.WriteLine(lineas[i]);
-        //        }
-        //    }
-        //    sw.Close();
-        //}
-
-        //Esta funcion se ejecuta al iniciar el programa para cargar las notas
-        //guardadas en el fichero local. Si no hay ningun fichero ejecutara el programa directamente
-        //private void CargarFichero()
-        //{
-        //    String[] lineas = null;
-
-        //    try
-        //    {
-        //        StreamReader sr = new StreamReader(nombreFichero);
-        //        lineas = Regex.Split(sr.ReadToEnd(), FINFICHERO);
-        //        sr.Close();
-
-        //        for (int i = 0; i < lineas.Length - 1; i++)
-        //        {
-        //            if (lineas[i] != String.Empty)
-        //            {
-        //                String[] fila = lineas[i].Split(new char[] { SEPARADOR }, 2);
-        //                guardarNuevaNota(fila[0], fila[1]);
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
-        //    }
-        //}
-
         private void InsertarBD(String titulo, String contenido)
         {
             try
@@ -318,15 +209,14 @@ namespace Bloc_de_notas
 
                 conexion = new MySqlConnection(builder.ToString());
 
-                String consulta = "insert into notas" +
-                    " values(?titulo, ?contenido)";
+                String consulta = "insert into notas(titulo, contenido) values(?titulo, ?contenido);";
 
                 conexion.Open();
 
                 MySqlCommand cmd = new MySqlCommand(consulta, conexion);
 
-                cmd.Parameters.AddWithValue("?id", titulo);
-                cmd.Parameters.AddWithValue("?nombre", contenido);
+                cmd.Parameters.AddWithValue("?contenido", contenido);
+                cmd.Parameters.AddWithValue("?titulo", titulo);
 
                 cmd.ExecuteNonQuery();
 
@@ -339,25 +229,6 @@ namespace Bloc_de_notas
             {
                 MessageBox.Show("Error al insertar datos en la base de datos! " + e.Message);
             }
-        }
-
-        private void cogerDatos(String titulo)
-        {
-            String consulta = "select * from notas where titulo = " + titulo;
-
-            conexion.Open();
-
-            MySqlCommand cmd = new MySqlCommand(consulta, conexion);
-            MySqlDataReader rs = cmd.ExecuteReader();
-
-            while (rs.Read())
-            {
-                tbTitulo.Text = rs.GetString(1);
-                rtbNota.Text = rs.GetString(2);
-            }
-
-            rs.Close();
-            conexion.Close();
         }
 
         private void CargarBD()
@@ -378,6 +249,7 @@ namespace Bloc_de_notas
                 conexion.Open();
 
                 MySqlCommand cmd = new MySqlCommand(consulta, conexion);
+                
                 MySqlDataReader rs = cmd.ExecuteReader();
 
                 while (rs.Read())
@@ -391,11 +263,112 @@ namespace Bloc_de_notas
             catch (Exception e)
             {
                 MessageBox.Show("Error al iniciar datos BD! " + e.Message);
+                MessageBox.Show("intentando crear base de datos y tabla...");
+                try
+                {
+                    MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+                    builder.Server = "localhost";
+                    builder.UserID = "root";
+                    builder.Password = "";
+
+                    conexion = new MySqlConnection(builder.ToString());
+
+                    String consulta = "create database notasvisual; create table notasvisual.notas(titulo varchar(50) primary key, contenido longtext );";
+
+                    conexion.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(consulta, conexion);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Base de datos y tabla creadas con exito correctamente");
+                    conexion.Close();
+
+                    ClearContenidos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al crear la base de datos! " + ex.Message + " Cerrando...");
+
+                    System.Environment.Exit(001);
+                }
             }
         }
 
-        private void UpdateBD()
+        private void UpdateBD(String titulo, String contenido)
         {
+
+            try
+            {
+                MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+                builder.Server = "localhost";
+                builder.UserID = "root";
+                builder.Password = "";
+                builder.Database = "notasvisual";
+
+                conexion = new MySqlConnection(builder.ToString());
+
+                String consulta = "update notas" +
+                    " set contenido = ?nota where titulo = ?titulo";
+
+                conexion.Open();
+
+                MySqlCommand cmd = new MySqlCommand(consulta, conexion);
+
+                cmd.Parameters.AddWithValue("?titulo", titulo);
+                cmd.Parameters.AddWithValue("?nota", contenido);
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("sobreescrito correctamente");
+                conexion.Close();
+
+                ClearContenidos();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error al sobreescribir datos en la base de datos! " + e.Message);
+            }
+
         }
+
+        private void BorrarNotaBD(String titulo)
+        {
+
+            try
+            {
+                MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+                builder.Server = "localhost";
+                builder.UserID = "root";
+                builder.Password = "";
+                builder.Database = "notasvisual";
+
+                conexion = new MySqlConnection(builder.ToString());
+
+                String consulta = "delete from notas where titulo = ?titulo";
+
+                conexion.Open();
+
+                MySqlCommand cmd = new MySqlCommand(consulta, conexion);
+
+                cmd.Parameters.AddWithValue("?titulo", titulo);
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("eliminado correctamente");
+                conexion.Close();
+
+                ClearContenidos();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error al eliminar datos en la base de datos! " + e.Message);
+            }
+
+        }
+
     }
 }
