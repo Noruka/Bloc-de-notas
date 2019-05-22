@@ -196,6 +196,7 @@ namespace Bloc_de_notas
             AnyadirItemsCB(tituloNotaActual);
         }
 
+        //Esta funcion inserta notas en la base de datos. Inserta el titulo como clave primaria y el contenido en un longtext.
         private void InsertarBD(String titulo, String contenido)
         {
             try
@@ -231,6 +232,8 @@ namespace Bloc_de_notas
             }
         }
 
+        //Esta funcion carga los datos de la base de datos al array del programa para listarlas. Si no existe la base de datos o da algun error,
+        //intentara crear la base de datos. Si no lo consigue cerrara el programa.
         private void CargarBD()
         {
             try
@@ -262,40 +265,13 @@ namespace Bloc_de_notas
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error al iniciar datos BD! " + e.Message);
-                MessageBox.Show("intentando crear base de datos y tabla...");
-                try
-                {
-                    MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-
-                    builder.Server = "localhost";
-                    builder.UserID = "root";
-                    builder.Password = "";
-
-                    conexion = new MySqlConnection(builder.ToString());
-
-                    String consulta = "create database notasvisual; create table notasvisual.notas(titulo varchar(50) primary key, contenido longtext );";
-
-                    conexion.Open();
-
-                    MySqlCommand cmd = new MySqlCommand(consulta, conexion);
-
-                    cmd.ExecuteNonQuery();
-
-                    MessageBox.Show("Base de datos y tabla creadas con exito correctamente");
-                    conexion.Close();
-
-                    ClearContenidos();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al crear la base de datos! " + ex.Message + " Cerrando...");
-
-                    System.Environment.Exit(001);
-                }
+                MessageBox.Show("Error al iniciar datos BD! " + e.Message + " intentando crear base de datos y tabla...");
+                CrearBD();
             }
         }
 
+        //Esta funcion se llama cuando se intenta guardar una nota que ya existe, y la sobreescribe. Esa comprobacion se hace con el array del programa
+        //y esta funcion solo ejecuta la consulta update con la nueva informacion.
         private void UpdateBD(String titulo, String contenido)
         {
 
@@ -334,6 +310,7 @@ namespace Bloc_de_notas
 
         }
 
+        //Esta funcion envia la consulta de borrar una nota de la base de datos dado un titulo.
         private void BorrarNotaBD(String titulo)
         {
 
@@ -366,6 +343,41 @@ namespace Bloc_de_notas
             catch (Exception e)
             {
                 MessageBox.Show("Error al eliminar datos en la base de datos! " + e.Message);
+            }
+
+        }
+
+        private void CrearBD() {
+
+          
+            try
+            {
+                MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+                builder.Server = "localhost";
+                builder.UserID = "root";
+                builder.Password = "";
+
+                conexion = new MySqlConnection(builder.ToString());
+
+                String consulta = "create database notasvisual; create table notasvisual.notas(titulo varchar(50) primary key, contenido longtext );";
+
+                conexion.Open();
+
+                MySqlCommand cmd = new MySqlCommand(consulta, conexion);
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Base de datos y tabla creadas con exito correctamente");
+                conexion.Close();
+
+                ClearContenidos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al crear la base de datos! " + ex.Message + " Cerrando...");
+
+                System.Environment.Exit(001);
             }
 
         }
