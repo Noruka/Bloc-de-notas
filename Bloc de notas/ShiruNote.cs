@@ -29,6 +29,11 @@ namespace Bloc_de_notas
 
         private MySqlConnection conexion;
 
+        private String dbserver = "192.168.1.140";
+        private String dbuser = "shiruPC2";
+        private String dbpass = "";
+        private String db = "notasvisual";
+
         //Creamos un List para guardar los objetos de tipo ObjetoNota que contendran
         //el titulo y el contenido.
         private List<ObjetoNota> Notas = new List<ObjetoNota>();
@@ -163,7 +168,6 @@ namespace Bloc_de_notas
                 MessageBox.Show("Se ha borrado " + Notas[i].Titulo);
                 BorrarNotaBD(Notas[i].Titulo);
                 BorrarItemsCB(i);
-                
 
                 //Limita el tamaño y limpia el texto del combobox.
                 if (toolStripCBLista.Items.Count != 0)
@@ -203,10 +207,10 @@ namespace Bloc_de_notas
             {
                 MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
 
-                builder.Server = "localhost";
-                builder.UserID = "root";
-                builder.Password = "";
-                builder.Database = "notasvisual";
+                builder.Server = dbserver;
+                builder.UserID = dbuser;
+                builder.Password = dbpass;
+                builder.Database = db;
 
                 conexion = new MySqlConnection(builder.ToString());
 
@@ -240,10 +244,10 @@ namespace Bloc_de_notas
             {
                 MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
 
-                builder.Server = "localhost";
-                builder.UserID = "root";
-                builder.Password = "";
-                builder.Database = "notasvisual";
+                builder.Server = dbserver;
+                builder.UserID = dbuser;
+                builder.Password = dbpass;
+                builder.Database = db;
 
                 conexion = new MySqlConnection(builder.ToString());
 
@@ -252,7 +256,7 @@ namespace Bloc_de_notas
                 conexion.Open();
 
                 MySqlCommand cmd = new MySqlCommand(consulta, conexion);
-                
+
                 MySqlDataReader rs = cmd.ExecuteReader();
 
                 while (rs.Read())
@@ -274,15 +278,14 @@ namespace Bloc_de_notas
         //y esta funcion solo ejecuta la consulta update con la nueva informacion.
         private void UpdateBD(String titulo, String contenido)
         {
-
             try
             {
                 MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
 
-                builder.Server = "localhost";
-                builder.UserID = "root";
-                builder.Password = "";
-                builder.Database = "notasvisual";
+                builder.Server = dbserver;
+                builder.UserID = dbuser;
+                builder.Password = dbpass;
+                builder.Database = db;
 
                 conexion = new MySqlConnection(builder.ToString());
 
@@ -307,21 +310,19 @@ namespace Bloc_de_notas
             {
                 MessageBox.Show("Error al sobreescribir datos en la base de datos! " + e.Message);
             }
-
         }
 
         //Esta funcion envia la consulta de borrar una nota de la base de datos dado un titulo.
         private void BorrarNotaBD(String titulo)
         {
-
             try
             {
                 MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
 
-                builder.Server = "localhost";
-                builder.UserID = "root";
-                builder.Password = "";
-                builder.Database = "notasvisual";
+                builder.Server = dbserver;
+                builder.UserID = dbuser;
+                builder.Password = dbpass;
+                builder.Database = db;
 
                 conexion = new MySqlConnection(builder.ToString());
 
@@ -344,19 +345,17 @@ namespace Bloc_de_notas
             {
                 MessageBox.Show("Error al eliminar datos en la base de datos! " + e.Message);
             }
-
         }
 
-        private void CrearBD() {
-
-          
+        private void CrearBD()
+        {
             try
             {
                 MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
 
-                builder.Server = "localhost";
-                builder.UserID = "root";
-                builder.Password = "";
+                builder.Server = dbserver;
+                builder.UserID = dbuser;
+                builder.Password = dbpass;
 
                 conexion = new MySqlConnection(builder.ToString());
 
@@ -379,8 +378,6 @@ namespace Bloc_de_notas
 
                 System.Environment.Exit(001);
             }
-
         }
-
     }
 }
