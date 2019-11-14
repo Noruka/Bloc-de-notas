@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShiruNote));
             this.msMenuHorizontal = new System.Windows.Forms.MenuStrip();
             this.crearNotaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,6 +130,7 @@
             this.Controls.Add(this.rtbNota);
             this.Controls.Add(this.tbTitulo);
             this.Controls.Add(this.msMenuHorizontal);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.msMenuHorizontal;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ShiruNote";
